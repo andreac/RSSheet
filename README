@@ -1,0 +1,96 @@
+RSSheet
+
+RSSheet it's a simple class for iOS to write .xls file.
+
+# RSStyle
+
+with RSStyle you can create the basic style of sheet, row and cell.
+
+## Property
+
+* `AlignmentV` it's a typedef for vertical align (`RSStyleTopALign`, `RSStyleCenterALign`, `RSStyleBottomALign`)
+* `AlignmentH` it's a typedef for horizontal align (`RSStyleHTopALign`, `RSStyleHCenterALign`, `RSStyleHBottomALign`)
+* `font` the font of this style
+* `color` color of font
+* `size` size of font
+
+# RSworkSheetRow
+
+RSworkSheetRow determinate a row in a sheet. You can set the `height` of the row and the `style`.
+
+## Property
+
+* `height` height of row
+* `style` the style of row (an instance of RSStyle)
+
+## Methods
+
+* `- (id)initWithHeight:(NSInteger )height` create new row and set height.
+* `- (id)initiWithHeight:(NSInteger )height andStyle:(RSStyle *)style` create new row with height and style of all cell in the row.
+* `- (void)addCellString:(NSString *)content` add new string cell.
+* `- (void)addCellString:(NSString *)content withStyle:(RSStyle *)style` add new string cell with particular style.
+* `- (void)addCellNumber:(float )content` add new Number cell.
+* `- (void)addCellNumber:(float )content withStyle:(RSStyle *)style` add new Number cell with particular style.
+* `- (void)addCellData:(NSDate *)content` add new cell with Date (accept NSDate)
+* `- (void)addCellData:(NSDate *)content withStyle:(RSStyle *)style` add new Date cell with particular style (accept NSDate)
+
+# RSworkSheet
+
+`RSworkSheet` provide a new sheet for the folder. The folder (`RSworkBook`) may contain more `RSworkSheet`. Every `RSworkSheet` may contain one or more `RSworkSheetRow`. You can set the name of the sheet, the default column width and the default row height.
+
+## Property
+
+* `columnWidth` default width of the column
+* `rowHeight` default height of row
+* `name` name of the sheet
+
+## Methods
+
+* `- (id)initWithName:(NSString*)nameSheet` init workSheet with new name.
+* `- (void)addWorkSheetRow:(RSworkSheetRow*)row` add to workSheet new row.
+
+# RSworkBook
+
+RSworkBook it's the folder that contains all the `RSworkSheet`. It's a simple container that write to file the document
+
+## Property
+
+* `author` the author of the document
+* `version` version of the document
+* `date` date that write document
+* `defaultStyle` default style to all cell (it's applied if the style of cell and row did not specified)
+
+## Methods
+
+* `- (void)addWorkSheet:(RSworkSheet *)sheet` add workSheet to folder.
+* `- (BOOL)writeWithName:(NSString*)name toPath:(NSString*)path` write the document with specified name and ti specified path.
+
+
+
+# Example
+   
+    RSworkBook * folder = [ [RSworkBook alloc] init];
+    folder.author = @"andrea cappellotto";
+    folder.version = 1.2;
+    
+    RSworkSheet * sheet = [[RSworkSheet alloc] initWithName:@"prova"];
+    
+    RSworkSheetRow * row = [[RSworkSheetRow alloc] initWithHeight:20];
+    [row addCellString:@"prova"];
+    [row addCellString:@"prova2"];
+    [sheet addWorkSheetRow:row];
+    
+    RSworkSheetRow * row2 = [[RSworkSheetRow alloc] initWithHeight:25];
+    [row2 addCellNumber:100];
+    [row2 addCellData:[NSDate date] ];
+    [sheet addWorkSheetRow:row2];
+    
+    [folder addWorkSheet:sheet];
+    
+    NSArray *documentPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	NSString *documentsDir = [documentPaths objectAtIndex:0];
+    [folder writeWithName:@"prova" toPath:documentsDir];
+
+
+
+this code create test.xls compatible with MSOffice (Mac, Win). Test.xls have two row with two cell. First row have two String and second row have a Number (float) and a date (NSDate)
