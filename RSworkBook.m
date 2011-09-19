@@ -19,7 +19,7 @@
         defaultStyle.font = [UIFont systemFontOfSize:14];
         defaultStyle.size = 14;
         defaultStyle.color = [UIColor blackColor];
-        defaultStyle.alignmentH = RSStyleHCenterAlign;
+        defaultStyle.alignmentH = RSStyleMiddleAlign;
         defaultStyle.alignmentV = RSStyleCenterAlign;
         
         version = 1.0;
@@ -42,10 +42,16 @@
 
 - (BOOL)writeWithName:(NSString*)name toPath:(NSString*)path
 {
-    NSString * heap = [[NSString alloc] initWithFormat:@"<?xml version=\"1.0\"encoding=\"UTF-8\"?>\n<?mso-application progid=\"Excel.Sheet\"?>\n<Workbook xmlns:c=\"urn:schemas-microsoft-com:office:component:spreadsheet\"\n xmlns:html=\"http://www.w3.org/TR/REC-html40\"\n xmlns:o=\"urn:schemas-microsoft-com:office:office\"\n xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n xmlns=\"urn:schemas-microsoft-com:office:spreadsheet\"\n xmlns:x2=\"http://schemas.microsoft.com/office/excel/2003/xml\"\n xmlns:ss=\"urn:schemas-microsoft-com:office:spreadsheet\"\n xmlns:x=\"urn:schemas-microsoft-com:office:excel\">\n<OfficeDocumentSettings xmlns=\"urn:schemas-microsoft-com:office:office\">\n</OfficeDocumentSettings>\n<ExcelWorkbook xmlns=\"urn:schemas-microsoft-com:office:excel\">\n<WindowHeight>20000</WindowHeight>\n<WindowWidth>20000</WindowWidth>\n<WindowTopX>0</WindowTopX>\n<WindowTopY>0</WindowTopY>\n<ProtectStructure>False</ProtectStructure>\n<ProtectWindows>False</ProtectWindows>\n</ExcelWorkbook>"];
     
+    NSDateFormatter *format = [[NSDateFormatter alloc] init];
+    [format setDateFormat:@"yyyy-MM-ddTHH:mm:ss"];
+    NSString *dateString = [format stringFromDate:self.date];
+    [format release];
+    
+    NSString * head = [[NSString alloc] initWithFormat:@"<?xml version=\"1.0\"encoding=\"UTF-8\"?>\n<?mso-application progid=\"Excel.Sheet\"?>\n<Workbook xmlns:c=\"urn:schemas-microsoft-com:office:component:spreadsheet\"\n xmlns:html=\"http://www.w3.org/TR/REC-html40\"\n xmlns:o=\"urn:schemas-microsoft-com:office:office\"\n xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n xmlns=\"urn:schemas-microsoft-com:office:spreadsheet\"\n xmlns:x2=\"http://schemas.microsoft.com/office/excel/2003/xml\"\n xmlns:ss=\"urn:schemas-microsoft-com:office:spreadsheet\"\n xmlns:x=\"urn:schemas-microsoft-com:office:excel\">\n<DocumentProperties xmlns=\"urn:schemas-microsoft-com:office:office\"><Author>%@</Author>\n<LastAuthor>%@</LastAuthor>\n<Created>%@</Created>\n<Version>%.2f</Version>\n</DocumentProperties>\n", self.author, self.author, dateString, self.version];
+    [dateString release];
 
-    
+    NSString * officeSetting = [[NSString alloc] initWithFormat:@"<OfficeDocumentSettings xmlns=\"urn:schemas-microsoft-com:office:office\">\n</OfficeDocumentSettings>\n<ExcelWorkbook xmlns=\"urn:schemas-microsoft-com:office:excel\">\n<WindowHeight>20000</WindowHeight>\n<WindowWidth>20000</WindowWidth>\n<WindowTopX>0</WindowTopX>\n<WindowTopY>0</WindowTopY>\n<ProtectStructure>False</ProtectStructure>\n<ProtectWindows>False</ProtectWindows>\n</ExcelWorkbook>"];
     
     NSMutableString * styleDefault = [[NSMutableString alloc] initWithFormat:@"<Styles>"];
     
@@ -63,26 +69,26 @@
         {
             if (![self isEqualStyle:sheetRow.style toStyle:defaultStyle]) 
             {
-                [styleDefault appendFormat:@"<Style ss:ID=\"s%i\" ss:Name=\"Normal\"><Alignment ss:Vertical=\"%@\" ss:Horizontal=\"%@\"/>\n<Borders/>\n<Font ss:FontName=\"%@\" ss:Size=\"%.2f\" ss:Color=\"#%@\"/>\n<Interior/>\n<NumberFormat/>\n<Protection/>\n</Style>\n",
+                [styleDefault appendFormat:@"<Style ss:ID=\"s%i\">\n<Alignment ss:Vertical=\"%@\" ss:Horizontal=\"%@\"/>\n<Borders/>\n<Font ss:FontName=\"%@\" ss:Size=\"%.2f\" ss:Color=\"#%@\"/>\n<Interior/>\n<NumberFormat/>\n<Protection/>\n</Style>\n",
                  60+i,
-                 [self formatTypeToStringVertical: defaultStyle.alignmentV], 
-                 [self formatTypeToStringHorizontal:defaultStyle.alignmentH], 
-                 defaultStyle.font.fontName,
-                 self.defaultStyle.size, 
-                 [self.defaultStyle.color hexStringFromColor]];
+                 [self formatTypeToStringVertical: sheetRow.style.alignmentV], 
+                 [self formatTypeToStringHorizontal:sheetRow.style.alignmentH], 
+                 sheetRow.style.font.fontName,
+                sheetRow.style.size, 
+                 [sheetRow.style.color hexStringFromColor]];
                 i++;
             }
             for (RSCell * cell in sheetRow.cellArray) 
             {
                 if (![self isEqualStyle:cell.style toStyle:defaultStyle]) 
                 {
-                    [styleDefault appendFormat:@"<Style ss:ID=\"s%i\" ss:Name=\"Normal\"><Alignment ss:Vertical=\"%@\" ss:Horizontal=\"%@\"/>\n<Borders/>\n<Font ss:FontName=\"%@\" ss:Size=\"%.2f\" ss:Color=\"#%@\"/>\n<Interior/>\n<NumberFormat/>\n<Protection/>\n</Style>\n",
+                    [styleDefault appendFormat:@"<Style ss:ID=\"s%i\">\n<Alignment ss:Vertical=\"%@\" ss:Horizontal=\"%@\"/>\n<Borders/>\n<Font ss:FontName=\"%@\" ss:Size=\"%.2f\" ss:Color=\"#%@\"/>\n<Interior/>\n<NumberFormat/>\n<Protection/>\n</Style>\n",
                      60+i,
-                     [self formatTypeToStringVertical: defaultStyle.alignmentV], 
-                     [self formatTypeToStringHorizontal:defaultStyle.alignmentH], 
-                     defaultStyle.font.fontName,
-                     self.defaultStyle.size, 
-                     [self.defaultStyle.color hexStringFromColor]];
+                     [self formatTypeToStringVertical: sheetRow.style.alignmentV], 
+                     [self formatTypeToStringHorizontal:sheetRow.style.alignmentH], 
+                     sheetRow.style.font.fontName,
+                     sheetRow.style.size, 
+                     [sheetRow.style.color hexStringFromColor]];
                     i++;
                 }
                 if (cell.type == cellTypeDate) 
@@ -157,7 +163,8 @@
     
     NSMutableString * finalText = [[NSMutableString alloc] init];
     
-    [finalText appendFormat:@"%@",heap];
+    [finalText appendFormat:@"%@",head];
+    [finalText appendFormat:@"%@",officeSetting];
     [finalText appendFormat:@"%@",styleDefault];
     [finalText appendFormat:@"%@",sheet];
     
@@ -172,7 +179,8 @@
         NSLog(@"salvataggio corretto");
         NSLog(@"path:%@", pathFinal);
         [sheet release];
-        [heap release];
+        [head release];
+        [officeSetting release];
         [styleDefault release];
         [finalText release];
         
@@ -182,7 +190,8 @@
     {
         NSLog(@"error:%@", err);
         [sheet release];
-        [heap release];
+        [head release];
+        [officeSetting release];
         [styleDefault release];
         [finalText release];
         
@@ -242,14 +251,14 @@
 - (NSString*)formatTypeToStringHorizontal:(horizontalAlign)formatType { 
     NSString *result = nil; 
     switch(formatType) { 
-        case RSStyleHTopAlign: 
-            result = @"Top"; 
+        case RSStyleLeftAlign: 
+            result = @"Left"; 
             break; 
-        case RSStyleHCenterAlign: 
+        case RSStyleMiddleAlign: 
             result = @"Center"; 
             break; 
-        case RSStyleHBottomAlign: 
-            result = @"Bottom"; 
+        case RSStyleRightAlign: 
+            result = @"Right"; 
             break;
         default: 
             [NSException raise:NSGenericException format:@"Unexpected FormatType."]; 

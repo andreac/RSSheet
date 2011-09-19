@@ -31,7 +31,7 @@
         style.font = [UIFont systemFontOfSize:14];
         style.size = 14;
         style.color = [UIColor blackColor];
-        style.alignmentH = RSStyleHCenterAlign;
+        style.alignmentH = RSStyleMiddleAlign;
         style.alignmentV = RSStyleCenterAlign;
         
         cellArray = [[NSMutableArray alloc] init];
@@ -57,7 +57,7 @@
     styleDefault.font = [UIFont systemFontOfSize:14];
     styleDefault.size = 14;
     styleDefault.color = [UIColor blackColor];
-    styleDefault.alignmentH = RSStyleHCenterAlign;
+    styleDefault.alignmentH = RSStyleMiddleAlign;
     styleDefault.alignmentV = RSStyleCenterAlign;
     
     RSCell * newCell = [[RSCell alloc] init];
@@ -87,7 +87,7 @@
     styleDefault.font = [UIFont systemFontOfSize:14];
     styleDefault.size = 14;
     styleDefault.color = [UIColor blackColor];
-    styleDefault.alignmentH = RSStyleHCenterAlign;
+    styleDefault.alignmentH = RSStyleMiddleAlign;
     styleDefault.alignmentV = RSStyleCenterAlign;
     
     RSCell * newCell = [[RSCell alloc] init];
@@ -114,12 +114,13 @@
     NSDateFormatter *format = [[NSDateFormatter alloc] init];
     [format setDateFormat:@"yyyy-MM-ddTHH:mm:ss"];
     NSString *dateString = [format stringFromDate:contentRow];
+    [format release];
     
     RSStyle * styleDefault = [[RSStyle alloc] init];
     styleDefault.font = [UIFont systemFontOfSize:14];
     styleDefault.size = 14;
     styleDefault.color = [UIColor blackColor];
-    styleDefault.alignmentH = RSStyleHCenterAlign;
+    styleDefault.alignmentH = RSStyleMiddleAlign;
     styleDefault.alignmentV = RSStyleCenterAlign;
     
     RSCell * newCell = [[RSCell alloc] init];
@@ -138,6 +139,7 @@
     NSDateFormatter *format = [[NSDateFormatter alloc] init];
     [format setDateFormat:@"yyyy-MM-ddTHH:mm:ss"];
     NSString *dateString = [format stringFromDate:contentRow];
+    [format release];
     
     RSCell * newCell = [[RSCell alloc] init];
     newCell.content = dateString;

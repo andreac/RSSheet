@@ -12,9 +12,9 @@ typedef enum {
 }verticalAlign;
 
 typedef enum {
-    RSStyleHTopAlign = 0,  
-    RSStyleHCenterAlign = 1,
-    RSStyleHBottomAlign = 2
+    RSStyleLeftAlign = 0,  
+    RSStyleMiddleAlign = 1,
+    RSStyleRightAlign = 2
 }horizontalAlign;
 
 #import <Foundation/Foundation.h>
