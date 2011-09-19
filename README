@@ -9,7 +9,7 @@ with RSStyle you can create the basic style of sheet, row and cell.
 ## Property
 
 * `AlignmentV` it's a typedef for vertical align (`RSStyleTopALign`, `RSStyleCenterALign`, `RSStyleBottomALign`)
-* `AlignmentH` it's a typedef for horizontal align (`RSStyleHTopALign`, `RSStyleHCenterALign`, `RSStyleHBottomALign`)
+* `AlignmentH` it's a typedef for horizontal align (`RSStyleLeftALign`, `RSStyleMiddleALign`, `RSStyleRightALign`)
 * `font` the font of this style
 * `color` color of font
 * `size` size of font
