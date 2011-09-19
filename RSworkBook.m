@@ -202,18 +202,18 @@
 
 -(BOOL)isEqualStyle:(RSStyle*)style1 toStyle:(RSStyle*)style2
 {
-    if ([style1.font isEqual:style2.font])
-        return TRUE;
-    if ([style1.color isEqual:style2.color])
-        return TRUE;
-    if (style1.size == style2.size)
-        return TRUE;
-    if (style1.alignmentH == style2.alignmentH)
-        return TRUE;
-    if (style1.alignmentV == style2.alignmentV)
-        return TRUE;
+    if (![style1.font isEqual:style2.font])
+        return FALSE;
+    if (![style1.color isEqual:style2.color])
+        return FALSE;
+    if (style1.size != style2.size)
+        return FALSE;
+    if (style1.alignmentH != style2.alignmentH)
+        return FALSE;
+    if (style1.alignmentV != style2.alignmentV)
+        return FALSE;
     
-    return FALSE;
+    return TRUE;
 }
 
 
