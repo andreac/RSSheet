@@ -55,18 +55,22 @@
     
     NSMutableString * styleDefault = [[NSMutableString alloc] initWithFormat:@"<Styles>"];
     
-    [styleDefault appendFormat:@"<Style ss:ID=\"Default\" ss:Name=\"Normal\"><Alignment ss:Vertical=\"%@\" ss:Horizontal=\"%@\"/>\n<Borders/>\n<Font ss:FontName=\"%@\" ss:Size=\"%.2f\" ss:Color=\"#%@\"/>\n<Interior/>\n<NumberFormat/>\n<Protection/>\n</Style>\n",
+    [styleDefault appendFormat:@"<Style ss:ID=\"Default\" ss:Name=\"Normal\">\n<Alignment ss:Vertical=\"%@\" ss:Horizontal=\"%@\"/>\n<Borders/>\n<Font ss:FontName=\"%@\" ss:Size=\"%.2f\" ss:Color=\"#%@\"/>\n<Interior/>\n<NumberFormat/>\n<Protection/>\n</Style>\n",
      [self formatTypeToStringVertical:self.defaultStyle.alignmentV], 
      [self formatTypeToStringHorizontal:self.defaultStyle.alignmentH], 
      defaultStyle.font.fontName,
      self.defaultStyle.size, 
      [self.defaultStyle.color hexStringFromColor]];
     
+    
+    BOOL dateType = FALSE;
     int i = 0;
     for (RSworkSheet * sheet in arrayWorkSheet) 
     {
+        
         for (RSworkSheetRow * sheetRow in sheet.arrayWorkSheetRow) 
         {
+            dateType = FALSE;
             if (![self isEqualStyle:sheetRow.style toStyle:defaultStyle]) 
             {
                 [styleDefault appendFormat:@"<Style ss:ID=\"s%i\">\n<Alignment ss:Vertical=\"%@\" ss:Horizontal=\"%@\"/>\n<Borders/>\n<Font ss:FontName=\"%@\" ss:Size=\"%.2f\" ss:Color=\"#%@\"/>\n<Interior/>\n<NumberFormat/>\n<Protection/>\n</Style>\n",
@@ -74,9 +78,11 @@
                  [self formatTypeToStringVertical: sheetRow.style.alignmentV], 
                  [self formatTypeToStringHorizontal:sheetRow.style.alignmentH], 
                  sheetRow.style.font.fontName,
-                sheetRow.style.size, 
+                 sheetRow.style.size, 
                  [sheetRow.style.color hexStringFromColor]];
+                
                 i++;
+                
             }
             for (RSCell * cell in sheetRow.cellArray) 
             {
@@ -91,10 +97,24 @@
                      [sheetRow.style.color hexStringFromColor]];
                     i++;
                 }
-                if (cell.type == cellTypeDate) 
+                if ((cell.type == cellTypeDate)&&(![self isEqualStyle:sheetRow.style toStyle:defaultStyle]))
+                {
+                    [styleDefault appendFormat:@"<Style ss:ID=\"s%i\">\n<Alignment ss:Vertical=\"%@\" ss:Horizontal=\"%@\"/>\n<Borders/>\n<Font ss:FontName=\"%@\" ss:Size=\"%.2f\" ss:Color=\"#%@\"/>\n<Interior/>\n<NumberFormat ss:Format=\"Short Date\" />\n<Protection/>\n</Style>\n",
+                    
+                    60+i,
+                    [self formatTypeToStringVertical: sheetRow.style.alignmentV], 
+                    [self formatTypeToStringHorizontal:sheetRow.style.alignmentH], 
+                    sheetRow.style.font.fontName,
+                    sheetRow.style.size, 
+                    [sheetRow.style.color hexStringFromColor]];
+                    dateType = TRUE;
+                    
+                    i++;
+                }
+                else if(cell.type == cellTypeDate)
                 {
                     [styleDefault  appendFormat:@"<Style ss:ID=\"s%i\">\n<NumberFormat ss:Format=\"Short Date\"/>\n</Style>\n", 60+i];
-                    i++;
+                    i++; 
                 }
             }
         }
@@ -108,7 +128,7 @@
     int j = 0;
     for (RSworkSheet * sheetwork in arrayWorkSheet) 
     {
-        [sheet appendFormat:@"<Worksheet ss:Name=\"%@\">", sheetwork.name];
+        [sheet appendFormat:@"<Worksheet ss:Name=\"%@\">\n", sheetwork.name];
         
         [sheet appendFormat:@"<Table ss:ExpandedColumnCount=\"%i\" ss:ExpandedRowCount=\"%i\" x:FullColumns=\"1\" x:FullRows=\"1\" ss:DefaultColumnWidth=\"%.2f\" ss:DefaultRowHeight=\"%.2f\">\n",
          [self countMaxCell:sheetwork.arrayWorkSheetRow],
