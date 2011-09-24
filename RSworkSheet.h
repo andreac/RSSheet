@@ -20,7 +20,7 @@
 @property(nonatomic, assign)float columnWidth;
 @property(nonatomic, assign)float rowHeight;
 @property(nonatomic, retain)NSString * name;
-@property(nonatomic, retain)NSMutableArray * arrayWorkSheetRow;
+@property(nonatomic, readonly)NSMutableArray * arrayWorkSheetRow;
 
 - (void)addWorkSheetRow:(RSworkSheetRow*)row;
 - (id)initWithName:(NSString*)nameSheet;

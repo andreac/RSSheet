@@ -8,7 +8,17 @@
 
 #import "RSworkBook.h"
 
+@interface RSworkBook()
+- (NSString*)formatTypeToStringVertical:(verticalAlign)formatType;
+- (NSString*)formatTypeToStringHorizontal:(horizontalAlign)formatType;
+- (NSString*)formatTypeToCellType:(cellType)formatType;
+- (int)countMaxCell:(NSMutableArray*)sheet;
+-(BOOL)isEqualStyle:(RSStyle*)style1 toStyle:(RSStyle*)style2;
+@end
+
+
 @implementation RSworkBook
+
 @synthesize version, author, date, defaultStyle;
 - (id)init
 {

@@ -29,14 +29,6 @@
 @property(nonatomic, assign)float version;
 @property(nonatomic, retain)RSStyle * defaultStyle;
 
-
-- (NSString*)formatTypeToStringVertical:(verticalAlign)formatType;
-- (NSString*)formatTypeToStringHorizontal:(horizontalAlign)formatType;
-- (NSString*)formatTypeToCellType:(cellType)formatType;
-- (int)countMaxCell:(NSMutableArray*)sheet;
--(BOOL)isEqualStyle:(RSStyle*)style1 toStyle:(RSStyle*)style2;
-
-
 - (void)addWorkSheet:(RSworkSheet *)sheet;
 - (BOOL)writeWithName:(NSString*)name toPath:(NSString*)path;
 @end

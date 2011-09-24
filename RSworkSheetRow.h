@@ -16,7 +16,7 @@
     float height;
     RSStyle * style;
 }
-@property(nonatomic, retain)NSMutableArray* cellArray;
+@property(nonatomic, readonly)NSMutableArray* cellArray;
 @property(nonatomic, assign)float height;
 @property(nonatomic, retain)RSStyle * style;
 
