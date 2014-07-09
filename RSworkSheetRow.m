@@ -39,11 +39,11 @@
     
     return self;
 }
-- (id)initiWithHeight:(NSInteger)heightRow andStyle:(RSStyle *)styleRow
+- (id) initWithHeight:(NSInteger)heightRow andStyle:(RSStyle *)styleRow
 {
     self = [super init];
     if (self) {
-        style = [styleRow retain];
+        style = styleRow;
         height = heightRow;
         cellArray = [[NSMutableArray alloc] init];
     }
@@ -65,10 +65,10 @@
     newCell.type = cellTypeString;
     newCell.style = styleDefault;
     
-    [styleDefault release];
+    
     
     [cellArray addObject:newCell];
-    [newCell release];
+    
     
 }
 - (void)addCellString:(NSString *)contentRow withStyle:(RSStyle *)styleRow
@@ -79,7 +79,7 @@
     newCell.style = styleRow;
     
     [cellArray addObject:newCell];
-    [newCell release];
+    
 }
 - (void)addCellNumber:(float)contentRow
 {
@@ -94,10 +94,10 @@
     newCell.content = [NSString stringWithFormat:@"%.2f", contentRow];
     newCell.type = cellTypeNumber;
     newCell.style = styleDefault;
-    [styleDefault release];
+    
     
     [cellArray addObject:newCell];
-    [newCell release];
+    
 }
 - (void)addCellNumber:(float)contentRow withStyle:(RSStyle *)styleRow
 {
@@ -107,14 +107,14 @@
     newCell.style = styleRow;
     
     [cellArray addObject:newCell];
-    [newCell release];
+    
 }
 - (void)addCellData:(NSDate *)contentRow
 {
     NSDateFormatter *format = [[NSDateFormatter alloc] init];
     [format setDateFormat:@"yyyy-MM-ddTHH:mm:ss"];
     NSString *dateString = [format stringFromDate:contentRow];
-    [format release];
+    
     
     RSStyle * styleDefault = [[RSStyle alloc] init];
     styleDefault.font = [UIFont systemFontOfSize:14];
@@ -127,10 +127,10 @@
     newCell.content = dateString;
     newCell.type = cellTypeDate;
     newCell.style = styleDefault;
-    [styleDefault release];
+    
     
     [cellArray addObject:newCell];
-    [newCell release];
+    
     
     
 }
@@ -139,7 +139,7 @@
     NSDateFormatter *format = [[NSDateFormatter alloc] init];
     [format setDateFormat:@"yyyy-MM-ddTHH:mm:ss"];
     NSString *dateString = [format stringFromDate:contentRow];
-    [format release];
+    
     
     RSCell * newCell = [[RSCell alloc] init];
     newCell.content = dateString;
@@ -147,14 +147,12 @@
     newCell.style = styleRow;
     
     [cellArray addObject:newCell];
-    [newCell release];
+    
 }
 
 -(void)dealloc
 {
-    [super dealloc];
-    [cellArray release];
-    [style release];
+   
 }
 
 

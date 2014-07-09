@@ -26,7 +26,7 @@ RSworkSheetRow determinate a row in a sheet. You can set the `height` of the row
 ## Methods
 
 * `- (id)initWithHeight:(NSInteger )height` create new row and set height.
-* `- (id)initiWithHeight:(NSInteger )height andStyle:(RSStyle *)style` create new row with height and style of all cell in the row.
+* `- (id)initWithHeight:(NSInteger )height andStyle:(RSStyle *)style` create new row with height and style of all cell in the row.
 * `- (void)addCellString:(NSString *)content` add new string cell.
 * `- (void)addCellString:(NSString *)content withStyle:(RSStyle *)style` add new string cell with particular style.
 * `- (void)addCellNumber:(float )content` add new Number cell.
