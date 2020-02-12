@@ -22,7 +22,7 @@
 
 
 - (id)initWithHeight:(NSInteger )height;
-- (id)initiWithHeight:(NSInteger )height andStyle:(RSStyle *)style;
+- (id)initWithHeight:(NSInteger )height andStyle:(RSStyle *)style;
 
 - (void)addCellString:(NSString *)content;
 - (void)addCellString:(NSString *)content withStyle:(RSStyle *)style;

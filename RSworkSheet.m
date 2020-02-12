@@ -44,8 +44,6 @@
 
 -(void)dealloc
 {
-    [super dealloc];
-    [name release];
-    [arrayWorkSheetRow release];
+    
 }
 @end
